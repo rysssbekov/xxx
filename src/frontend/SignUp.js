@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { useHistory } from "react-router-dom";
 import Paper from '@material-ui/core/Paper';
+import { Redirect } from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import PizzaAppBar from './AppBar'
 export default class SignUp extends Component {
     constructor(props) {
         super(props)
@@ -24,7 +27,9 @@ export default class SignUp extends Component {
             alert('passwords do not match')
             return
         }
-        event.preventDefault();         
+        event.preventDefault();  
+        let self = this
+        //let history = useHistory();       
         const data = {username: this.state.username, password: this.state.password}
         console.log(data)
         fetch('/api/sign-up', {
@@ -32,11 +37,24 @@ export default class SignUp extends Component {
           headers:{'content-type': 'application/json'},
           body: JSON.stringify(data),
         }).then(res => res.text())
-        .then(res => console.log(res))
+        .then(res => {   
+          if(res == "correct") {
+            console.log(res)
+            if(self.props.history.location.state.from) {
+              document.cookie = `username=${self.state.username};`
+              self.props.history.push('/confirm', {order: self.props.location.state.order})
+            } else {
+              self.props.history.push('/login')
+            }
+          }
+        })
       }  
       render() {  
+        console.log(this.props.history)
   return (
-    <Grid container>
+    <div>
+    <PizzaAppBar />
+    <Grid container style={{marginTop: "24px"}}>
     <Grid item xs={4} />
     <Grid item xs={4} >
     <Paper elevation={5}>
@@ -67,13 +85,23 @@ export default class SignUp extends Component {
           onChange={e => this.handleChange(e, "confirm_password")}
         />  
         </div>
+        <br/>
+        <div>
         <Button type="submit" variant="contained" color="primary" disableElevation>
             Sign Up
         </Button>
+        </div>
+        <br/>
+        <div>
+        <Button variant="contained" color="primary" disableElevation onClick={(e) => this.props.history.push("/sign-up")}>
+          Log in
+        </Button>
+        </div>
     </form>
     </Paper>
     </Grid>
     <Grid item xs={4} />
     </Grid>
+    </div>
   )
 }}

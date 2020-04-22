@@ -61,4 +61,8 @@ app.get('/api/confirm', (req, res) => {
         res.send(JSON.parse(data));
     })
 })
+app.get('*', (req,res) =>{
+    res.sendFile(path.join(__dirname+'/dist/index.html'));
+});
+
 })

@@ -15,6 +15,7 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import PizzaAppBar from './AppBar'
 const styles ={
   root: {
     display: 'flex',
@@ -90,13 +91,11 @@ export default class Order extends Component {
   displayPrice = (row) => row.price + " HKD"
   handleConfirm(e) {
     e.preventDefault()
-    fetch("/api/confirm")
-    .then(res => res.json())
-    .then(data =>  {
-      if(data.success) {
-        this.setState({confirmed: true, deliveryTime: data.deliveryTime })}
-      }
-    )
+    if(document.cookie.includes("username")) {
+      this.props.history.push("/confirm", {order: this.state.order})
+    } else {
+      this.props.history.push("/login", {from: true, order: this.state.order})
+    }
   }
 
   render() {
@@ -107,6 +106,7 @@ export default class Order extends Component {
       if(!this.state.confirmed){
     return (
       <div> 
+        <PizzaAppBar />
          <Typography variant="h3" component="h2" style={styles.title} gutterBottom>Welcome to the PizzaNut. You can complete your order online here!</Typography>
          <Grid container spacing={3}>
            <Grid item xs={8}>
