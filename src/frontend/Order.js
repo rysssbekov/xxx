@@ -83,7 +83,7 @@ export default class Order extends Component {
         )
       } </Typography>
       {order.length == 0 ? (<span></span>) : (<Typography variant="h6" style={{marginTop: "5px"}}>Total price: {order.reduce((sum, x) => (sum + x.pizza.price * x.qt), 0) + " HKD"}</Typography>)}
-       {order.length == 0 ? (<span></span>) : (<Button variant="contained" style={styles.shopping_cart_button} color="secondary" onClick={(e) => this.handleConfirm(e)}>Confirm</Button>)}
+       {order.length == 0 ? (<span></span>) : (<Button variant="contained" style={styles.shopping_cart_button} color="secondary" onClick={(e) => this.handleConfirm(e)}>Next</Button>)}
       </Paper>
     )
   }
@@ -115,8 +115,8 @@ export default class Order extends Component {
               <TableHead>
                 <TableRow>
                   <TableCell style={styles.th}>Name</TableCell>
-                  <TableCell style={styles.th} align="left">Price</TableCell>
                   <TableCell style={styles.th} align="left">Image</TableCell>
+                  <TableCell style={styles.th} align="left">Price</TableCell>
                   <TableCell style={styles.th} align="left">Ingredients</TableCell>                  
                   <TableCell style={styles.th} align="right">Add</TableCell>                  
                 </TableRow>

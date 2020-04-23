@@ -14,7 +14,8 @@ export default class SignUp extends Component {
         this.state = {
             username: "",
             password: "",
-            confirm_password: ""
+            confirm_password: "",
+            address: ""
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -30,8 +31,7 @@ export default class SignUp extends Component {
         event.preventDefault();  
         let self = this
         //let history = useHistory();       
-        const data = {username: this.state.username, password: this.state.password}
-        console.log(data)
+        const data = {username: this.state.username, password: this.state.password, address: this.state.address}
         fetch('/api/sign-up', {
           method: 'POST',
           headers:{'content-type': 'application/json'},
@@ -44,7 +44,7 @@ export default class SignUp extends Component {
               document.cookie = `username=${self.state.username};`
               self.props.history.push('/confirm', {order: self.props.location.state.order})
             } else {
-              self.props.history.push('/login')
+              self.props.history.push('/login', {from: false})
             }
           }
         })
@@ -70,6 +70,7 @@ export default class SignUp extends Component {
           id="standard-password-input"
           label="Password"
           type="password"
+          required
           autoComplete="current-password"
           value={this.state.password}
           onChange={e => this.handleChange(e, "password")}
@@ -80,10 +81,19 @@ export default class SignUp extends Component {
           id="standard-password-input-confirm"
           label="Confirm Password"
           type="password"
+          required
           autoComplete="current-password-confirm"
           value={this.state.confirm_password}
           onChange={e => this.handleChange(e, "confirm_password")}
         />  
+        </div>        
+        <div>
+          <TextField
+            id="address"
+            label="Delivery Address"
+            value={this.state.address}
+            onChange={e => this.handleChange(e, "address")}
+            />
         </div>
         <br/>
         <div>
@@ -93,8 +103,8 @@ export default class SignUp extends Component {
         </div>
         <br/>
         <div>
-        <Button variant="contained" color="primary" disableElevation onClick={(e) => this.props.history.push("/sign-up")}>
-          Log in
+        <Button variant="contained" color="primary" disableElevation onClick={(e) => this.props.history.push("/login", {from: false})}>
+            Log in
         </Button>
         </div>
     </form>

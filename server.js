@@ -61,6 +61,48 @@ app.get('/api/confirm', (req, res) => {
         res.send(JSON.parse(data));
     })
 })
+app.post('/api/user-address', (req, res) => {
+    let body = req.body
+    client.connect(err => {
+        const collection = client.db("pizza_nut").collection("users");
+        collection.find().toArray().then(result => {
+            res.send(result.filter(x => x.username == body.username)[0].address)
+        })
+})
+})
+app.post('/api/order', (req, res) => {
+    let body = req.body
+    client.connect(err => {
+        const collection = client.db("pizza_nut").collection("orders");  
+        collection.find().toArray().then(result => {
+            if(result.filter(x => x.username == body.username).length == 0) {
+                collection.insert({
+                    username: body.username,
+                    orders: [
+                       {order: body.order, date: Date.now()}
+                    ]
+                })
+            } else {
+                result.filter(x => x.username == body.username)[0].orders.push({order: body.order, date: Date.now()})
+            }            
+            res.status(200).send("" + Math.floor(Math.random() * (55 - 15) + 15))
+        }).catch(errr => console.log(errr))        
+    })
+})
+app.post("/api/orders", (req,res) => {
+    let body = req.body
+    client.connect(err => {
+        const collection = client.db("pizza_nut").collection("orders");  
+        collection.find().toArray().then(result => {
+            if(result.filter(x => x.username == body.username).length != 0) {
+                const obj = result.filter(x => x.username == body.username)[0]
+                console.log("obj")
+                console.log(obj)
+                res.send({orders: obj.orders})
+            }
+        }).catch(error =>{ console.log("pzdc"); console.log(error)})
+    })
+})
 app.get('*', (req,res) =>{
     res.sendFile(path.join(__dirname+'/dist/index.html'));
 });

@@ -13,6 +13,7 @@ import SignUp from './SignUp';
 import Login from './Login';
 import ConfirmOrder from './ConfirmOrder';
 import Profile from './Profile'
+import PizzaAppBar from './AppBar'
 export default function App() {
     return(
         <Router>
@@ -22,7 +23,8 @@ export default function App() {
           <Route path="/sign-up" component={SignUp} />                                  
           <Route path="/confirm" component={ConfirmOrder} />
           <Route path="/profile" component={Profile} /> 
-          <Route path="/" component={Order} />                                          
+          <Route path="/dmzncjksadhf" component={PizzaAppBar} />   
+          <Route path="/" component={Order} />                                            
         </Switch>
       </div>
     </Router>

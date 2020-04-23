@@ -26,7 +26,7 @@ export default class Login extends Component {
             username: "",
             password: "",
             snackBarOpen: false,
-            snackBar2Open: true,
+            snackBar2Open: false,
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -87,7 +87,7 @@ export default class Login extends Component {
           Incorrect credentials! Please, try again.
         </Alert>
       </Snackbar>    
-       <Snackbar open={this.state.snackBar2Open} autoHideDuration={6000} onClose={this.handleClose2}>
+       <Snackbar open={this.state.snackBar2Open} autoHideDuration={3000} onClose={this.handleClose2}>
         <Alert onClose={this.handleClose2} severity="info">
           Please log in to complete your order
         </Alert>
